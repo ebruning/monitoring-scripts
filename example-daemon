@@ -1,6 +1,6 @@
 #!/bin/bash
 # chkconfig: 2345 90 90
-# description: custom-esxi
+# description: custom servive
 ### BEGIN INIT INFO
 # Provides: custom-esxi
 # Required-Start: network
@@ -11,10 +11,11 @@
 ### END INIT INFO
 
 ### Fill in these bits:
-START_CMD="/var/www/scripts/esxmon.sh > /var/log/custom-esxi.log 2>&1 &"
-NAME="custom-esxi"
-PGREP_STRING="/var/www/scripts/esxmon.sh"
-PID_FILE="/var/run/custom-esxi/custom-esxi.pid"
+SCRIPT_NAME=
+START_CMD="/opt/monitoring-scripts/$SCRIPT_NAME.sh > /var/log/$SCRIPT_NAME.log 2>&1 &"
+NAME="$SCRIPT_NAME service"
+PGREP_STRING="/opt/monitoring-scripts/$SCRIPT_NAME.sh"
+PID_FILE="/var/run/$SCRIPT_NAME.pid"
 USER="root"
 
 ### No further muckin' about needed!
