@@ -1,5 +1,41 @@
 {
-  "id": 1,
+  "__inputs": [
+    {
+      "name": "DS_DASHBOARD",
+      "label": "dashboard",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "3.1.1"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    }
+  ],
+  "id": null,
   "title": "Bruning.IO",
   "tags": [],
   "style": "dark",
@@ -16,7 +52,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "dashboard",
+          "datasource": "${DS_DASHBOARD}",
           "decimals": 0,
           "editable": true,
           "error": false,
@@ -101,6 +137,7 @@
               ],
               "hide": false,
               "measurement": "ping",
+              "policy": "default",
               "query": "SELECT min(\"value\") FROM \"ping\" WHERE \"host\" = '8.8.8.8' AND \"measurement\" = 'min' AND $timeFilter GROUP BY time($interval) fill(previous)",
               "refId": "A",
               "resultFormat": "time_series",
@@ -130,8 +167,7 @@
                   "operator": "=",
                   "value": "min"
                 }
-              ],
-              "policy": "default"
+              ]
             },
             {
               "alias": "Avg",
@@ -151,6 +187,7 @@
                 }
               ],
               "measurement": "ping",
+              "policy": "default",
               "query": "SELECT mean(\"value\") FROM \"ping\" WHERE \"host\" = '8.8.8.8' AND \"measurement\" = 'avg' AND $timeFilter GROUP BY time($interval) fill(previous)",
               "refId": "B",
               "resultFormat": "time_series",
@@ -180,8 +217,7 @@
                   "operator": "=",
                   "value": "avg"
                 }
-              ],
-              "policy": "default"
+              ]
             },
             {
               "alias": "Max",
@@ -201,6 +237,7 @@
                 }
               ],
               "measurement": "ping",
+              "policy": "default",
               "query": "SELECT max(\"value\") FROM \"ping\" WHERE \"host\" = '8.8.8.8' AND \"measurement\" = 'max' AND $timeFilter GROUP BY time($interval) fill(previous)",
               "refId": "C",
               "resultFormat": "time_series",
@@ -230,8 +267,7 @@
                   "operator": "=",
                   "value": "max"
                 }
-              ],
-              "policy": "default"
+              ]
             },
             {
               "alias": "Loss",
@@ -252,6 +288,7 @@
               ],
               "hide": false,
               "measurement": "ping",
+              "policy": "default",
               "query": "SELECT mean(\"value\") FROM \"ping\" WHERE \"host\" = '8.8.8.8' AND \"measurement\" = 'loss' AND $timeFilter GROUP BY time($interval) fill(previous)",
               "refId": "D",
               "resultFormat": "time_series",
@@ -281,8 +318,7 @@
                   "operator": "=",
                   "value": "loss"
                 }
-              ],
-              "policy": "default"
+              ]
             }
           ],
           "timeFrom": "30m",
@@ -321,7 +357,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "dashboard",
+          "datasource": "${DS_DASHBOARD}",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -388,6 +424,7 @@
                 }
               ],
               "measurement": "speedtest",
+              "policy": "default",
               "query": "SELECT mean(\"value\") FROM \"speedtest\" WHERE \"metric\" = 'ping' AND $timeFilter GROUP BY time($interval) fill(null)",
               "refId": "A",
               "resultFormat": "time_series",
@@ -411,8 +448,7 @@
                   "operator": "=",
                   "value": "ping"
                 }
-              ],
-              "policy": "default"
+              ]
             },
             {
               "alias": "Download",
@@ -432,6 +468,7 @@
                 }
               ],
               "measurement": "speedtest",
+              "policy": "default",
               "query": "SELECT mean(\"value\") FROM \"speedtest\" WHERE \"metric\" = 'download' AND $timeFilter GROUP BY time($interval) fill(null)",
               "refId": "B",
               "resultFormat": "time_series",
@@ -455,8 +492,7 @@
                   "operator": "=",
                   "value": "download"
                 }
-              ],
-              "policy": "default"
+              ]
             },
             {
               "alias": "Upload",
@@ -476,6 +512,7 @@
                 }
               ],
               "measurement": "speedtest",
+              "policy": "default",
               "query": "SELECT mean(\"value\") FROM \"speedtest\" WHERE \"metric\" = 'upload' AND $timeFilter GROUP BY time($interval) fill(null)",
               "refId": "C",
               "resultFormat": "time_series",
@@ -499,8 +536,7 @@
                   "operator": "=",
                   "value": "upload"
                 }
-              ],
-              "policy": "default"
+              ]
             }
           ],
           "timeFrom": null,
@@ -545,7 +581,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "Main Home DB",
+          "datasource": "${DS_DASHBOARD}",
           "editable": true,
           "error": false,
           "fill": 0,
@@ -629,7 +665,8 @@
                   "operator": "=",
                   "value": "gig1"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "2TB NAS",
@@ -678,7 +715,8 @@
                   "operator": "=",
                   "value": "gig2"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "VM1 VMnetwork",
@@ -727,7 +765,8 @@
                   "operator": "=",
                   "value": "gig9"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "QNAP iSCSI",
@@ -776,7 +815,8 @@
                   "operator": "=",
                   "value": "gig14"
                 }
-              ]
+              ],
+              "policy": "default"
             }
           ],
           "timeFrom": null,
@@ -812,7 +852,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "Main Home DB",
+          "datasource": "${DS_DASHBOARD}",
           "editable": true,
           "error": false,
           "fill": 1,
@@ -911,7 +951,8 @@
                   "operator": "=",
                   "value": "inbound"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "Inbound Kids/Guest",
@@ -966,7 +1007,8 @@
                   "operator": "=",
                   "value": "inbound"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "Outbound Main/Media",
@@ -1021,7 +1063,8 @@
                   "operator": "=",
                   "value": "outbound"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "Outbound Kids/Guests",
@@ -1076,7 +1119,8 @@
                   "operator": "=",
                   "value": "outbound"
                 }
-              ]
+              ],
+              "policy": "default"
             }
           ],
           "timeFrom": null,
@@ -1133,7 +1177,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "Main Home DB",
+          "datasource": "${DS_DASHBOARD}",
           "decimals": 0,
           "editable": true,
           "error": false,
@@ -1231,7 +1275,8 @@
                   "operator": "=",
                   "value": "esxi1"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "CPU2",
@@ -1286,7 +1331,8 @@
                   "operator": "=",
                   "value": "esxi1"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "CPU3",
@@ -1341,7 +1387,8 @@
                   "operator": "=",
                   "value": "esxi1"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "CPU4",
@@ -1396,7 +1443,8 @@
                   "operator": "=",
                   "value": "esxi1"
                 }
-              ]
+              ],
+              "policy": "default"
             },
             {
               "alias": "Memory",
@@ -1445,7 +1493,8 @@
                   "operator": "=",
                   "value": "esxi1"
                 }
-              ]
+              ],
+              "policy": "default"
             }
           ],
           "timeFrom": null,
@@ -1521,7 +1570,7 @@
   },
   "refresh": "1m",
   "schemaVersion": 12,
-  "version": 5,
+  "version": 9,
   "links": [],
   "gnetId": null
 }
