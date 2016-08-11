@@ -91,7 +91,14 @@ print_data () {
 
 write_data () {
     #Write the data to the database
-    echo "sending data for $1"
+
+    host=""
+    if [ $1 = "172.16.1.231" ]; then
+      host="proxmox01"
+      echo "change"
+    fi
+    echo "sending data for $host"
+    exit
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=cputemp value=$cputemp"
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=systemtemp value=$systemtemp"
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=periphtemp value=$periphtemp"
