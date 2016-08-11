@@ -35,6 +35,7 @@ memCached=$(snmpwalk -On -v 2c -c $SNMP_Community $HostIP 1.3.6.1.4.1.2021.4.15 
 allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $HostIP .1.3.6.1.2.1.25.2.3.1.4.50 | awk '{print $4}')
 totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $HostIP .1.3.6.1.2.1.25.2.3.1.5.50 | awk '{print $4}') \* $allocationUnits`
 usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $HostIP .1.3.6.1.2.1.25.2.3.1.6.50 | awk '{print $4}') \* $allocationUnits`
+availableStorage=`expr $totalStorage - $usedStorage`
 
 # output to graphite from walked metrics above.
 #for (( i=0; i<${#interface[*]}; i=i+1 )); do
@@ -59,5 +60,6 @@ curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds0
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds01,metric=memCached value=$memCached"
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds01,metric=totalStorage value=$totalStorage"
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds01,metric=usedStorage value=$usedStorage"
+curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds01,metric=availableStorage value=$availableStorage" #Work around for influx/grafana limitation
 
 
