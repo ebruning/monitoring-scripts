@@ -30,8 +30,6 @@ availableStorage=`expr $totalStorage - $usedStorage`
 #done
 
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds02,metric=uptime value=$(($sysUpTime/100))"
-curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds02,metric=temperature value=$temperature"
-
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds02,metric=memTotalReal value=$memTotalReal"
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds02,metric=memAvailReal value=$memAvailReal"
 curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=ds02,metric=totalStorage value=$totalStorage"
