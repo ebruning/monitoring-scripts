@@ -7,9 +7,6 @@
 # Based on work by: Josh Behrends - 04/29/2013
 
 # variables
-CarbonServer="localhost"
-CarbonPort="2003"
-MetricRoot="servers"
 Host="ds01"
 HostIP="172.16.1.15"
 SNMP_Community="public"
