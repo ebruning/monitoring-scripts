@@ -95,10 +95,15 @@ write_data () {
     host=""
     if [ $1 = "172.16.1.231" ]; then
       host="proxmox01"
-      echo "change"
+    elif [ $1 = "172.16.1.232" ]; then
+      host="proxmox02"
+    elif [ $1 = "172.16.1.233" ]; then
+      host="proxmox03"
+    else
+      host="unknown"
     fi
     echo "sending data for $host"
-    exit
+
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=cputemp value=$cputemp"
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=systemtemp value=$systemtemp"
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "health_data,host=$1,sensor=periphtemp value=$periphtemp"
