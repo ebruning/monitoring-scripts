@@ -61,14 +61,19 @@ get_ipmi_data () {
         fana=`cat tempdatafile | grep "FANA" | cut -f2 -d"|" | grep -o '[0-9]\+'`
         rm tempdatafile
         
-        #if [[ $cputemp -le 0 || $systemtemp -le 0 || $periphtemp -le 0 || $pchtemp -le 0 || $vrmtemp -le 0 || $dimma1temp -le 0 || $dimma2temp -le 0 || $dimmb1temp -le 0 || $dimmb2temp -le 0 || $fan2 -le 0 || $fan3 -le 0 || $fan4 -le 0 || $fana -le 0 ]]; 
-        if [[ $cputemp -le 0 || $systemtemp -le 0 || $periphtemp -le 0 || $pchtemp -le 0 || $vrmtemp -le 0 || $dimma1temp -le 0 || $dimma2temp -le 0 || $dimmb1temp -le 0 || $dimmb2temp -le 0 || $fana -le 0 ]]; 
-        	then
-                echo "Retry getting data - received some invalid data from the read"
-            else
-                #We got good data - exit this loop
-                COUNTER=10
+        if [ cputemp = "" ]; then
+          echo "empty"
         fi
+exit
+
+        #if [[ $cputemp -le 0 || $systemtemp -le 0 || $periphtemp -le 0 || $pchtemp -le 0 || $vrmtemp -le 0 || $dimma1temp -le 0 || $dimma2temp -le 0 || $dimmb1temp -le 0 || $dimmb2temp -le 0 || $fan2 -le 0 || $fan3 -le 0 || $fan4 -le 0 || $fana -le 0 ]]; 
+        #if [[ $cputemp -le 0 || $systemtemp -le 0 || $periphtemp -le 0 || $pchtemp -le 0 || $vrmtemp -le 0 || $dimma1temp -le 0 || $dimma2temp -le 0 || $dimmb1temp -le 0 || $dimmb2temp -le 0 || $fana -le 0 ]]; 
+        #	then
+        #        echo "Retry getting data - received some invalid data from the read"
+        #    else
+                #We got good data - exit this loop
+        #        COUNTER=10
+        #fi
         let COUNTER=COUNTER+1 
     done
 } 
