@@ -70,12 +70,9 @@ get_data () {
   sysUpTime=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.2.1.1.3 | sed 's/.*[(]\([0-9]*\)[)].*/\1/')
   memTotalReal=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.5 | awk '{print $4}')
   memAvailReal=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.6 | awk '{print $4}')
-  allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.50 | awk '{print $4}')
-  totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.50 | awk '{print $4}') \* $allocationUnits`
-  usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.50 | awk '{print $4}') \* $allocationUnits`
   availableStorage=`expr $totalStorage - $usedStorage`
 
-  if [ $1 = "172.16.1.15" ]; then
+    if [ $1 = "172.16.1.15" ]; then
     load1=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.10.1.3.1 | awk '{print $4}'| tr -d '"')
     load5=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.10.1.3.2 | awk '{print $4}'| tr -d '"')
     load15=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.10.1.3.3 | awk '{print $4}'| tr -d '"')
@@ -87,6 +84,15 @@ get_data () {
     memBuffer=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.14 | awk '{print $4}')
     memShared=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.13 | awk '{print $4}')
     memCached=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.15 | awk '{print $4}')
+    allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.50 | awk '{print $4}')
+    totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.50 | awk '{print $4}') \* $allocationUnits`
+    usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.50 | awk '{print $4}') \* $allocationUnits`
+  fi
+  
+  if [ $1 = "172.16.1.16" ]; then
+    allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.38 | awk '{print $4}')
+    totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.38 | awk '{print $4}') \* $allocationUnits`
+    usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.38 | awk '{print $4}') \* $allocationUnits`
   fi
 }
 
