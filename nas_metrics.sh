@@ -90,9 +90,9 @@ get_data () {
   fi
   
   if [ $1 = "172.16.1.16" ]; then
-    allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.38 | awk '{print $4}')
-    totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.38 | awk '{print $4}') \* $allocationUnits`
-    usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.38 | awk '{print $4}') \* $allocationUnits`
+    allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.49 | awk '{print $4}')
+    totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.49 | awk '{print $4}') \* $allocationUnits`
+    usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.49 | awk '{print $4}') \* $allocationUnits`
   fi
 }
 
