@@ -70,7 +70,6 @@ get_data () {
   sysUpTime=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.2.1.1.3 | sed 's/.*[(]\([0-9]*\)[)].*/\1/')
   memTotalReal=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.5 | awk '{print $4}')
   memAvailReal=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.4.6 | awk '{print $4}')
-  availableStorage=`expr $totalStorage - $usedStorage`
 
     if [ $1 = "172.16.1.15" ]; then
     load1=$(snmpwalk -On -v 2c -c $SNMP_Community $1 1.3.6.1.4.1.2021.10.1.3.1 | awk '{print $4}'| tr -d '"')
@@ -92,8 +91,18 @@ get_data () {
   if [ $1 = "172.16.1.16" ]; then
     allocationUnits=$(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.4.49 | awk '{print $4}')
     totalStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.5.49 | awk '{print $4}') \* $allocationUnits`
-    usedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.49 | awk '{print $4}') \* $allocationUnits`
-  fi
+    volume1UsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.38 | awk '{print $4}') \* $allocationUnits`
+    aptcacherUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.39 | awk '{print $4}') \* $allocationUnits`
+    dockerUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.40 | awk '{print $4}') \* $allocationUnits`
+    downloadsUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.41 | awk '{print $4}') \* $allocationUnits`
+    homeUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.42 | awk '{print $4}') \* $allocationUnits`
+    moviesUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.46 | awk '{print $4}') \* $allocationUnits`
+    musicUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.47 | awk '{print $4}') \* $allocationUnits`
+    proxmoxUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.48 | awk '{print $4}') \* $allocationUnits`
+    tvUsedStorage=`expr $(snmpwalk -On -v 2c -c $SNMP_Community $1 .1.3.6.1.2.1.25.2.3.1.6.49 | awk '{print $4}') \* $allocationUnits`
+
+    usedStorage=`expr $volume1UsedStorage + $aptcacherUsedStorage + $dockerUsedStorage + $downloadsUsedStorage + $homeUsedStorage + $moviesUsedStorage + $musicUsedStorage + $proxmoxUsedStorage + $tvUsedStorage` 
+   fi
 }
 
 write_data () {
@@ -112,7 +121,6 @@ write_data () {
   curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=$host,metric=memAvailReal value=$memAvailReal"
   curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=$host,metric=totalStorage value=$totalStorage"
   curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=$host,metric=usedStorage value=$usedStorage"
-  curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=$host,metric=availableStorage value=$availableStorage" #Work around for influx/grafana limitation  
   
   if [ $1 = "172.16.1.15" ]; then
     curl -i -XPOST 'http://localhost:8086/write?db=home' --data-binary "nas,host=$host,metric=load1 value=$load1"
@@ -138,7 +146,7 @@ do
     sleep "$sleeptime"
     for server in "${servers[@]}"; do
       get_data $server
-      print_data $server 
+      # print_data $server 
       write_data $server
     done
 done
